@@ -17,52 +17,54 @@
  * under the License.                                           *
  ****************************************************************/
 
-package com.linagora.cassandra.demo.rest;
+package com.linagora.cassandra.demo.rest.json;
 
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Preconditions;
 
-public class UserRequest {
-    private final String name;
-    private final String mailAddress;
+public class AccountUpdateRequest {
+    private final String type;
+    private final int amount;
 
     @JsonCreator
-    public UserRequest(@JsonProperty("name") String name, @JsonProperty("mailAddress") String mailAddress) {
-        this.name = name;
-        this.mailAddress = mailAddress;
+    public AccountUpdateRequest(@JsonProperty("type") String type, @JsonProperty("amount") int amount) {
+        Preconditions.checkArgument(amount > 0);
+        this.type = type;
+        this.amount = amount;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public String getMailAddress() {
-        return mailAddress;
+    public int getAmount() {
+        return amount;
     }
 
     @Override
     public final boolean equals(Object o) {
-        if (o instanceof UserRequest) {
-            UserRequest that = (UserRequest) o;
+        if (o instanceof AccountUpdateRequest) {
+            AccountUpdateRequest that = (AccountUpdateRequest) o;
 
-            return Objects.equals(this.name, that.name)
-                && Objects.equals(this.mailAddress, that.mailAddress);
+            return Objects.equals(this.amount, that.amount)
+                && Objects.equals(this.type, that.type);
         }
         return false;
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(name, mailAddress);
+        return Objects.hash(type, amount);
     }
 
     @Override
     public String toString() {
-        return "UserRequest{" +
-            "name='" + name + '\'' +
-            ", mailAddress='" + mailAddress + '\'' +
+        return "AccountUpdateRequest{" +
+            "type='" + type + '\'' +
+            ", amount=" + amount +
             '}';
     }
 }

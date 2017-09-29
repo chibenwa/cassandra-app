@@ -33,11 +33,11 @@ public interface AccountMapper {
 
     CompletableFuture<Optional<Account>> retrieveAccount(AccountId accountId);
 
-    CompletableFuture<Void> openAccount(Account account);
+    CompletableFuture<AccountId> openNewAccount(UserId userId);
 
     CompletableFuture<Void> credit(AccountId accountId, int amount);
 
     CompletableFuture<Void> debit(AccountId accountId, int amount);
 
-    CompletableFuture<Stream<AccountOpertation>> history(AccountId accountId, Optional<Integer> limit);
+    CompletableFuture<Stream<AccountOpertation>> history(AccountId accountId);
 }

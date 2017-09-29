@@ -16,19 +16,27 @@
  * specific language governing permissions and limitations      *
  * under the License.                                           *
  ****************************************************************/
+package com.linagora.cassandra.demo.storage.cassandra.utils;
 
-package com.linagora.cassandra.demo.guice;
+import java.util.Optional;
+import java.util.stream.Stream;
 
-import com.google.inject.AbstractModule;
-import com.linagora.cassandra.demo.storage.api.AccountMapper;
-import com.linagora.cassandra.demo.storage.api.UserMapper;
-import com.linagora.cassandra.demo.storage.cassandra.CassandraAccountMapper;
-import com.linagora.cassandra.demo.storage.cassandra.CassandraUserMapper;
+public class OptionalUtils {
 
-public class CassandraModule extends AbstractModule {
-    @Override
-    protected void configure() {
-        bind(UserMapper.class).to(CassandraUserMapper.class);
-        bind(AccountMapper.class).to(CassandraAccountMapper.class);
+    @FunctionalInterface
+    public interface Operation {
+        void perform();
+    }
+
+    public static <T> Optional<T> ifEmpty(Optional<T> optional, Operation operation) {
+        if (!optional.isPresent()) {
+            operation.perform();
+        }
+        return optional;
+    }
+
+    public static <T> Stream<T> toStream(Optional<T> optional) {
+        return optional.map(Stream::of)
+            .orElse(Stream.of());
     }
 }

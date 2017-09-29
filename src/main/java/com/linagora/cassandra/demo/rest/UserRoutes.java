@@ -33,6 +33,7 @@ import com.linagora.cassandra.demo.model.User;
 import com.linagora.cassandra.demo.model.ids.UserId;
 import com.linagora.cassandra.demo.rest.json.JsonExtractor;
 import com.linagora.cassandra.demo.rest.json.JsonTransformer;
+import com.linagora.cassandra.demo.rest.json.UserRequest;
 import com.linagora.cassandra.demo.storage.api.UserMapper;
 
 import spark.Request;

@@ -17,18 +17,52 @@
  * under the License.                                           *
  ****************************************************************/
 
-package com.linagora.cassandra.demo.guice;
+package com.linagora.cassandra.demo.rest.json;
 
-import com.google.inject.AbstractModule;
-import com.linagora.cassandra.demo.storage.api.AccountMapper;
-import com.linagora.cassandra.demo.storage.api.UserMapper;
-import com.linagora.cassandra.demo.storage.cassandra.CassandraAccountMapper;
-import com.linagora.cassandra.demo.storage.cassandra.CassandraUserMapper;
+import java.util.Objects;
 
-public class CassandraModule extends AbstractModule {
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class UserRequest {
+    private final String name;
+    private final String mailAddress;
+
+    @JsonCreator
+    public UserRequest(@JsonProperty("name") String name, @JsonProperty("mailAddress") String mailAddress) {
+        this.name = name;
+        this.mailAddress = mailAddress;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getMailAddress() {
+        return mailAddress;
+    }
+
     @Override
-    protected void configure() {
-        bind(UserMapper.class).to(CassandraUserMapper.class);
-        bind(AccountMapper.class).to(CassandraAccountMapper.class);
+    public final boolean equals(Object o) {
+        if (o instanceof UserRequest) {
+            UserRequest that = (UserRequest) o;
+
+            return Objects.equals(this.name, that.name)
+                && Objects.equals(this.mailAddress, that.mailAddress);
+        }
+        return false;
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hash(name, mailAddress);
+    }
+
+    @Override
+    public String toString() {
+        return "UserRequest{" +
+            "name='" + name + '\'' +
+            ", mailAddress='" + mailAddress + '\'' +
+            '}';
     }
 }

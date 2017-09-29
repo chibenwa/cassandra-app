@@ -26,7 +26,7 @@ import javax.inject.Inject;
 import spark.Service;
 
 public class RestServer {
-    private static final int PORT = 8001;
+    private static final int PORT = 8002;
 
     private final Set<Routes> routes;
     private final Service service;

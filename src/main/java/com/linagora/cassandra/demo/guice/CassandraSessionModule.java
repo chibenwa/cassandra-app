@@ -30,7 +30,7 @@ import com.google.inject.Provides;
 
 public class CassandraSessionModule extends AbstractModule {
 
-    private static final String KEYSPACE = "cassandraDemo3";
+    private static final String KEYSPACE = "cassandraDemo4";
     private static final int REPLICATION_FACTOR = 1;
     private static final String DURABLE_WRITES = String.valueOf(true);
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(CassandraSessionModule.class);

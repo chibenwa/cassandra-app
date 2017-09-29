@@ -22,17 +22,40 @@ package com.linagora.cassandra.demo.model;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.linagora.cassandra.demo.model.ids.AccountId;
+import com.linagora.cassandra.demo.model.ids.UserId;
+
 public class Account {
-    private final UUID accountId;
+    private final AccountId accountId;
+    private final UserId userId;
     private final int amount;
 
-    public Account(UUID accountId, int amount) {
+    public Account(AccountId accountId, UserId userId, int amount) {
         this.accountId = accountId;
+        this.userId = userId;
         this.amount = amount;
     }
 
-    public UUID getAccountId() {
+    @JsonIgnore
+    public AccountId getAccountId() {
         return accountId;
+    }
+
+    @JsonProperty("accountId")
+    public String getRawAccountId() {
+        return accountId.getId().toString();
+    }
+
+    @JsonIgnore
+    public UserId getUserId() {
+        return userId;
+    }
+
+    @JsonProperty("userId")
+    public String getRawUserId() {
+        return userId.getId().toString();
     }
 
     public int getAmount() {
@@ -45,6 +68,7 @@ public class Account {
             Account account = (Account) o;
 
             return Objects.equals(this.amount, account.amount)
+                && Objects.equals(this.userId, account.userId)
                 && Objects.equals(this.accountId, account.accountId);
         }
         return false;
@@ -52,13 +76,14 @@ public class Account {
 
     @Override
     public final int hashCode() {
-        return Objects.hash(accountId, amount);
+        return Objects.hash(accountId, userId, amount);
     }
 
     @Override
     public String toString() {
         return "Account{" +
             "accountId=" + accountId +
+            ", userId=" + userId +
             ", amount=" + amount +
             '}';
     }

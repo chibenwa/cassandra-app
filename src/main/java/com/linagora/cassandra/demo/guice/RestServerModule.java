@@ -22,6 +22,7 @@ package com.linagora.cassandra.demo.guice;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import com.google.inject.multibindings.Multibinder;
+import com.linagora.cassandra.demo.rest.AccountRoutes;
 import com.linagora.cassandra.demo.rest.Routes;
 import com.linagora.cassandra.demo.rest.UserRoutes;
 import com.linagora.cassandra.demo.rest.json.JsonTransformer;
@@ -32,6 +33,7 @@ public class RestServerModule extends AbstractModule {
         Multibinder<Routes> routesMultibinder = Multibinder.newSetBinder(binder(), Routes.class);
 
         routesMultibinder.addBinding().to(UserRoutes.class);
+        routesMultibinder.addBinding().to(AccountRoutes.class);
 
         bind(JsonTransformer.class).in(Scopes.SINGLETON);
     }

@@ -19,15 +19,36 @@
 
 package com.linagora.cassandra.demo.model;
 
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.linagora.cassandra.demo.model.ids.AccountId;
 import com.linagora.cassandra.demo.model.ids.AccountOperationId;
 
 public class AccountOpertation {
-    enum Type{
-        Debit,
-        Credit
+    public enum Type{
+        Debit("debit"),
+        Credit("credit");
+
+        private String value;
+
+        Type(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public static Type retrieveType(String value) {
+            return Arrays.stream(Type.values())
+                .filter(type -> type.getValue().equals(value))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("Can not retrieve type " + value));
+        }
     }
 
     private final AccountOperationId operationId;
@@ -42,20 +63,38 @@ public class AccountOpertation {
         this.amount = amount;
     }
 
+    @JsonIgnore
     public AccountOperationId getOperationId() {
         return operationId;
     }
 
+    @JsonIgnore
     public AccountId getAccountId() {
         return accountId;
     }
 
+    @JsonIgnore
     public Type getType() {
         return type;
     }
 
     public int getAmount() {
         return amount;
+    }
+
+    @JsonProperty("accountId")
+    public String getRawAccountId() {
+        return accountId.getId().toString();
+    }
+
+    @JsonProperty("operationId")
+    public String getRawOperationId() {
+        return operationId.getId().toString();
+    }
+
+    @JsonProperty("type")
+    public String getRawType() {
+        return type.getValue();
     }
 
     @Override
